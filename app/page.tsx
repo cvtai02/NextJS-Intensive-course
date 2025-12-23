@@ -1,65 +1,222 @@
-import Image from "next/image";
+import Header from './components/Header';
+import Footer from './components/Footer';
+import FeaturedSlider from './components/FeaturedSlider';
+import Link from 'next/link';
+import { articles } from './lib/data';
 
-export default function Home() {
+export default async function Home() {
+  const featuredArticles = articles.slice(0, 3);
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+    <>
+      <Header />
+
+      {/* Masonry Section */}
+      <section id="bricks">
+        <div className="row masonry">
+          {/* brick-wrapper */}
+          <div className="bricks-wrapper">
+            <div className="grid-sizer"></div>
+
+            {/* Featured Slider */}
+            <FeaturedSlider articles={featuredArticles} />
+
+            {/* Regular Articles */}
+            {articles.map((article, index) => {
+              // Skip featured articles
+              if (index < 3) return null;
+
+              if (article.postFormat === 'standard') {
+                return (
+                  <article key={article.id} className="brick entry format-standard animate-this">
+                    <div className="entry-thumb">
+                      <Link href={`/posts/${article.id}`} className="thumb-link">
+                        <img src={article.featuredImage} alt={article.title} />
+                      </Link>
+                    </div>
+                    <div className="entry-text">
+                      <div className="entry-header">
+                        <div className="entry-meta">
+                          <span className="cat-links">
+                            <Link href={`/category/${article.category}`}>{article.category}</Link>
+                            {article.tags.length > 0 && (
+                              <Link href="#">{article.tags[0]}</Link>
+                            )}
+                          </span>
+                        </div>
+                        <h1 className="entry-title">
+                          <Link href={`/posts/${article.id}`}>{article.title}</Link>
+                        </h1>
+                      </div>
+                      <div className="entry-excerpt">
+                        {article.excerpt}
+                      </div>
+                    </div>
+                  </article>
+                );
+              }
+
+              if (article.postFormat === 'audio') {
+                return (
+                  <article key={article.id} className="brick entry format-audio animate-this">
+                    <div className="entry-thumb">
+                      <Link href={`/posts/${article.id}`} className="thumb-link">
+                        <img src={article.featuredImage} alt={article.title} />
+                      </Link>
+                      {article.audioUrl && (
+                        <div className="audio-wrap">
+                          <audio id="player" src={article.audioUrl}  controls></audio>
+                        </div>
+                      )}
+                    </div>
+                    <div className="entry-text">
+                      <div className="entry-header">
+                        <div className="entry-meta">
+                          <span className="cat-links">
+                            <Link href={`/category/${article.category}`}>{article.category}</Link>
+                            {article.tags.length > 0 && (
+                              <Link href="#">{article.tags[0]}</Link>
+                            )}
+                          </span>
+                        </div>
+                        <h1 className="entry-title">
+                          <Link href={`/posts/${article.id}`}>{article.title}</Link>
+                        </h1>
+                      </div>
+                      <div className="entry-excerpt">
+                        {article.excerpt}
+                      </div>
+                    </div>
+                  </article>
+                );
+              }
+
+              if (article.postFormat === 'gallery') {
+                return (
+                  <article key={article.id} className="brick entry format-gallery group animate-this">
+                    <div className="entry-thumb">
+                      <div className="post-slider flexslider">
+                        <ul className="slides">
+                          {article.galleryImages?.map((img, idx) => (
+                            <li key={idx}>
+                              <img src={img} alt={`${article.title} ${idx + 1}`} />
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="entry-text">
+                      <div className="entry-header">
+                        <div className="entry-meta">
+                          <span className="cat-links">
+                            <Link href={`/category/${article.category}`}>{article.category}</Link>
+                            {article.tags.length > 0 && (
+                              <Link href="#">{article.tags[0]}</Link>
+                            )}
+                          </span>
+                        </div>
+                        <h1 className="entry-title">
+                          <Link href={`/posts/${article.id}`}>{article.title}</Link>
+                        </h1>
+                      </div>
+                      <div className="entry-excerpt">
+                        {article.excerpt}
+                      </div>
+                    </div>
+                  </article>
+                );
+              }
+
+              if (article.postFormat === 'video') {
+                return (
+                  <article key={article.id} className="brick entry format-video animate-this">
+                    <div className="entry-thumb video-image">
+                      {article.videoUrl ? (
+                        <a href={article.videoUrl} data-lity>
+                          <img src={article.featuredImage} alt={article.title} />
+                        </a>
+                      ) : (
+                        <Link href={`/posts/${article.id}`}>
+                          <img src={article.featuredImage} alt={article.title} />
+                        </Link>
+                      )}
+                    </div>
+                    <div className="entry-text">
+                      <div className="entry-header">
+                        <div className="entry-meta">
+                          <span className="cat-links">
+                            <Link href={`/category/${article.category}`}>{article.category}</Link>
+                            {article.tags.length > 0 && (
+                              <Link href="#">{article.tags[0]}</Link>
+                            )}
+                          </span>
+                        </div>
+                        <h1 className="entry-title">
+                          <Link href={`/posts/${article.id}`}>{article.title}</Link>
+                        </h1>
+                      </div>
+                      <div className="entry-excerpt">
+                        {article.excerpt}
+                      </div>
+                    </div>
+                  </article>
+                );
+              }
+
+              if (article.postFormat === 'quote') {
+                return (
+                  <article key={article.id} className="brick entry format-quote animate-this">
+                    <div className="entry-thumb">
+                      <blockquote>
+                        <p>{article.quote}</p>
+                        <cite>{article.quoteAuthor}</cite>
+                      </blockquote>
+                    </div>
+                  </article>
+                );
+              }
+
+              if (article.postFormat === 'link') {
+                return (
+                  <article key={article.id} className="brick entry format-link animate-this">
+                    <div className="entry-thumb">
+                      <div className="link-wrap">
+                        <p>{article.linkDescription}</p>
+                        <cite>
+                          <a target="_blank" href={article.linkUrl} rel="noopener noreferrer">
+                            {article.linkUrl}
+                          </a>
+                        </cite>
+                      </div>
+                    </div>
+                  </article>
+                );
+              }
+
+              return null;
+            })}
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+
+        {/* Pagination */}
+        <div className="row">
+          <nav className="pagination">
+            <span className="page-numbers prev inactive">Prev</span>
+            <span className="page-numbers current">1</span>
+            <a href="#" className="page-numbers">2</a>
+            <a href="#" className="page-numbers">3</a>
+            <a href="#" className="page-numbers">4</a>
+            <a href="#" className="page-numbers">5</a>
+            <a href="#" className="page-numbers">6</a>
+            <a href="#" className="page-numbers">7</a>
+            <a href="#" className="page-numbers">8</a>
+            <a href="#" className="page-numbers">9</a>
+            <a href="#" className="page-numbers next">Next</a>
+          </nav>
         </div>
-      </main>
-    </div>
+      </section>
+
+      <Footer />
+    </>
   );
 }

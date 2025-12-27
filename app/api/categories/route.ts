@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { categories } from '@/app/lib/data';
+import { verifyAdminToken, unauthorizedResponse } from '@/app/lib/auth';
 
 // GET all categories
 export async function GET() {
@@ -8,6 +9,12 @@ export async function GET() {
 
 // POST new category (admin only)
 export async function POST(request: Request) {
+  // Verify admin authorization
+  const user = verifyAdminToken(request);
+  if (!user) {
+    return unauthorizedResponse();
+  }
+
   try {
     const category = await request.json();
     

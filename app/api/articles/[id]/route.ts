@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { articles } from '@/app/lib/data';
+import { verifyAdminToken, unauthorizedResponse } from '@/app/lib/auth';
 
 // GET single article by ID
 export async function GET(
@@ -21,6 +22,12 @@ export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  // Verify admin authorization
+  const user = verifyAdminToken(request);
+  if (!user) {
+    return unauthorizedResponse();
+  }
+
   try {
     const { id } = await params;
     const updatedData = await request.json();
@@ -46,6 +53,12 @@ export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  // Verify admin authorization
+  const user = verifyAdminToken(request);
+  if (!user) {
+    return unauthorizedResponse();
+  }
+
   try {
     const { id } = await params;
     const index = articles.findIndex((a) => a.id === id);

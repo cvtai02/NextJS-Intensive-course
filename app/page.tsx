@@ -2,9 +2,26 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import FeaturedSlider from './components/FeaturedSlider';
 import Link from 'next/link';
-import { articles } from './lib/data';
+
+async function getArticles() {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const res = await fetch(`${baseUrl}/api/articles`, { 
+      cache: 'no-store',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!res.ok) throw new Error('Failed to fetch');
+    return await res.json();
+  } catch (error) {
+    console.error('Error fetching articles:', error);
+    return [];
+  }
+}
 
 export default async function Home() {
+  const articles = await getArticles();
   const featuredArticles = articles.slice(0, 3);
 
   return (

@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import bcrypt from 'bcryptjs';
 import { users } from '@/app/lib/data';
 
 export async function POST(request: Request) {
@@ -29,7 +28,7 @@ export async function POST(request: Request) {
     // Create session token (simplified for demo)
     const token = Buffer.from(`${user.id}:${Date.now()}`).toString('base64');
 
-    return NextResponse.json({
+    const response = NextResponse.json({
       user: {
         id: user.id,
         email: user.email,
@@ -38,6 +37,17 @@ export async function POST(request: Request) {
       },
       token,
     });
+
+    // Set cookie for server-side authentication
+    response.cookies.set('token', token, {
+      httpOnly: false,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+      path: '/',
+    });
+
+    return response;
   } catch (error) {
     return NextResponse.json(
       { error: 'Authentication failed' },

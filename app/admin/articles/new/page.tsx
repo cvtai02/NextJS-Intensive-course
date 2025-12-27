@@ -24,13 +24,6 @@ export default function NewArticlePage() {
   const router = useRouter();
 
   useEffect(() => {
-    // Check authentication
-    const token = localStorage.getItem('token');
-    if (!token) {
-      router.push('/admin/login');
-      return;
-    }
-
     fetchCategories();
   }, []);
 
@@ -84,27 +77,28 @@ export default function NewArticlePage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
-      <header className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-gray-800">New Article</h1>
-          <Link href="/admin/dashboard" className="text-blue-600 hover:text-blue-800">
-            ← Back to Dashboard
-          </Link>
-        </div>
-      </header>
+    <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="mb-6">
+        <Link href="/admin/dashboard" className="text-blue-600 hover:text-blue-800 flex items-center">
+          <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Dashboard
+        </Link>
+      </div>
 
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="bg-white shadow rounded-lg p-6">
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
-              <input
-                type="text"
-                name="title"
-                value={formData.title}
-                onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md"
+      <div className="bg-white shadow rounded-lg p-6">
+        <h1 className="text-2xl font-bold text-gray-800 mb-6">Create New Article</h1>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">Title *</label>
+            <input
+              type="text"
+              name="title"
+              value={formData.title}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500"
                 required
               />
             </div>
@@ -267,6 +261,5 @@ export default function NewArticlePage() {
           </form>
         </div>
       </div>
-    </div>
   );
 }

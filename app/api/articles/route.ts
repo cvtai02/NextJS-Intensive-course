@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { articles } from '@/app/lib/data';
+import { verifyAdminToken, unauthorizedResponse } from '@/app/lib/auth';
 
 // GET all articles or filter by category
 export async function GET(request: Request) {
@@ -42,6 +43,12 @@ export async function GET(request: Request) {
 
 // POST new article (admin only)
 export async function POST(request: Request) {
+  // Verify admin authorization
+  const user = verifyAdminToken(request);
+  if (!user) {
+    return unauthorizedResponse();
+  }
+
   try {
     const article = await request.json();
     

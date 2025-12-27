@@ -97,6 +97,16 @@ export default function AdminLayout({
                   Categories
                 </Link>
                 <Link
+                  href="/admin/blogs"
+                  className={`px-3 py-2 rounded-md text-sm font-medium ${
+                    pathname?.startsWith('/admin/blogs')
+                      ? 'bg-blue-600 text-white'
+                      : 'text-gray-700 hover:bg-gray-200'
+                  }`}
+                >
+                  Blogs
+                </Link>
+                <Link
                   href="/"
                   className="px-3 py-2 rounded-md text-sm font-medium text-purple-700 hover:bg-purple-100"
                   target="_blank"

@@ -1,4 +1,4 @@
-import { Article, Category, User } from '@/app/types';
+import { Article, Category, User, Blog } from '@/app/types';
 
 // Mock data for articles
 export const articles: Article[] = [
@@ -238,6 +238,66 @@ export const users: User[] = [
     email: 'editor@example.com',
     name: 'Editor User',
     role: 'editor',
+  },
+];
+
+// Mock data for blogs
+export const blogs: Blog[] = [
+  {
+    id: '1',
+    title: 'Getting Started with React 19',
+    slug: 'getting-started-react-19',
+    excerpt: 'Learn about the new features and improvements in React 19, including better server components and enhanced performance.',
+    content: '<p>React 19 brings exciting new features...</p>',
+    author: 'Admin User',
+    authorAvatar: '/images/avatars/user-01.jpg',
+    publishDate: '2025-12-20',
+    featuredImage: '/images/thumbs/featured/featured-1.jpg',
+    tags: ['react', 'javascript', 'web-development'],
+    status: 'published',
+    views: 245,
+  },
+  {
+    id: '2',
+    title: 'Building Scalable APIs with Next.js',
+    slug: 'building-scalable-apis-nextjs',
+    excerpt: 'A comprehensive guide to creating robust and scalable API routes in Next.js applications.',
+    content: '<p>Next.js API routes provide a powerful way...</p>',
+    author: 'Admin User',
+    authorAvatar: '/images/avatars/user-01.jpg',
+    publishDate: '2025-12-18',
+    featuredImage: '/images/thumbs/featured/featured-2.jpg',
+    tags: ['nextjs', 'api', 'backend'],
+    status: 'published',
+    views: 189,
+  },
+  {
+    id: '3',
+    title: 'TypeScript Best Practices 2025',
+    slug: 'typescript-best-practices-2025',
+    excerpt: 'Discover the latest TypeScript best practices and patterns for writing maintainable code.',
+    content: '<p>TypeScript has evolved significantly...</p>',
+    author: 'Editor User',
+    authorAvatar: '/images/avatars/user-02.jpg',
+    publishDate: '2025-12-15',
+    featuredImage: '/images/thumbs/featured/featured-3.jpg',
+    tags: ['typescript', 'programming', 'best-practices'],
+    status: 'published',
+    views: 312,
+  },
+  {
+    id: '4',
+    title: 'Draft: Advanced Tailwind CSS Techniques',
+    slug: 'advanced-tailwind-css-techniques',
+    excerpt: 'This is a draft post about advanced Tailwind CSS techniques and customization strategies.',
+    content: '<p>Coming soon...</p>',
+    author: 'Admin User',
+    authorAvatar: '/images/avatars/user-01.jpg',
+    publishDate: '2025-12-27',
+    featuredImage: '/images/thumbs/diagonal-building.jpg',
+    tags: ['css', 'tailwind', 'design'],
+    status: 'draft',
+    views: 0,
   },
 ];
 

@@ -19,6 +19,21 @@ export interface Article {
   linkDescription?: string;
 }
 
+export interface Blog {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  content: string;
+  author: string;
+  authorAvatar: string;
+  publishDate: string;
+  featuredImage: string;
+  tags: string[];
+  status: 'draft' | 'published';
+  views: number;
+}
+
 export interface Category {
   id: string;
   name: string;
